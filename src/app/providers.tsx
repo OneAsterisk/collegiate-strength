@@ -29,12 +29,71 @@ function getQueryClient() {
 
 export function PostHogProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
-    posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY as string, {
-      api_host:
-        process.env.NEXT_PUBLIC_POSTHOG_HOST || "https://us.i.posthog.com",
-      person_profiles: "identified_only", // or 'always' to create profiles for anonymous users as well
-      capture_pageview: false, // Disable automatic pageview capture, as we capture manually
-    });
+    // Check if PostHog key exists and is valid
+    const posthogKey = process.env.NEXT_PUBLIC_POSTHOG_KEY;
+
+    if (!posthogKey || posthogKey === "your_posthog_project_key_here") {
+      console.warn(
+        "PostHog: No valid API key found. Analytics will be disabled."
+      );
+      return;
+    }
+
+    // Skip initialization in development if no key
+    if (process.env.NODE_ENV === "development" && !posthogKey) {
+      return;
+    }
+
+    // Initialize PostHog with better error handling
+    try {
+      posthog.init(posthogKey, {
+        // Use reverse proxy to bypass ad blockers, fallback to direct
+        api_host:
+          process.env.NEXT_PUBLIC_POSTHOG_USE_PROXY === "true"
+            ? "/ingest"
+            : process.env.NEXT_PUBLIC_POSTHOG_HOST ||
+              "https://us.i.posthog.com",
+
+        person_profiles: "identified_only",
+        capture_pageview: false, // We handle this manually
+        capture_pageleave: true, // Capture when users leave pages
+
+        // CORS and network settings
+        cross_subdomain_cookie: false,
+        secure_cookie: true,
+
+        // Better error handling
+        loaded: function () {
+          if (process.env.NEXT_PUBLIC_POSTHOG_DEBUG === "true") {
+            console.log("PostHog loaded successfully");
+          }
+        },
+
+        // Additional settings to help with CORS
+        persistence: "localStorage+cookie",
+
+        // Respect Do Not Track
+        respect_dnt: true,
+
+        // Session recording settings (disable if causing issues)
+        disable_session_recording: false,
+
+        // Advanced settings to reduce ad blocker detection
+        property_blacklist: ["$current_url", "$screen_height", "$screen_width"],
+
+        // Bootstrap options
+        bootstrap: {
+          distinctID: undefined,
+          isIdentifiedID: false,
+        },
+
+        // Additional ad blocker bypass settings
+        autocapture: false, // Disable autocapture to reduce detection
+        capture_heatmaps: false, // Disable heatmaps
+      });
+    } catch (error) {
+      console.error("PostHog initialization failed:", error);
+    }
   }, []);
 
   return (
@@ -70,15 +129,22 @@ function PostHogPageView() {
   const searchParams = useSearchParams();
   const posthog = usePostHog();
 
-  // Track pageviews
+  // Track pageviews with error handling
   useEffect(() => {
     if (pathname && posthog) {
-      let url = window.origin + pathname;
-      if (searchParams.toString()) {
-        url = url + "?" + searchParams.toString();
-      }
+      try {
+        let url = window.origin + pathname;
+        if (searchParams.toString()) {
+          url = url + "?" + searchParams.toString();
+        }
 
-      posthog.capture("$pageview", { $current_url: url });
+        posthog.capture("$pageview", {
+          $current_url: url,
+          timestamp: new Date().toISOString(),
+        });
+      } catch (error) {
+        console.error("PostHog pageview capture failed:", error);
+      }
     }
   }, [pathname, searchParams, posthog]);
 
