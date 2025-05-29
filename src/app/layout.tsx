@@ -27,7 +27,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} min-h-screen bg-linear-to-r/srgb from-gray-900 from-5% via-gray-700 via-50% to-gray-900 to-95%`}
+        className={`${geistSans.variable} ${geistMono.variable} min-h-screen bg-radial-[at_25%_25%] from-gray-700 to-gray-900`}
       >
         <Providers>
           <div className="min-h-screen">
