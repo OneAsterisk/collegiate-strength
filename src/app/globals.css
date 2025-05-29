@@ -47,19 +47,19 @@
 :root {
   --radius: 0.625rem;
   --background: #ca1616;
-  --foreground: #f8fafc;
+  --foreground: #fefefe;
   --card: #334155;
-  --card-foreground: #f8fafc;
+  --card-foreground: #fefefe;
   --popover: #334155;
-  --popover-foreground: #f8fafc;
+  --popover-foreground: #fefefe;
   --primary: #3b82f6;
-  --primary-foreground: #f8fafc;
+  --primary-foreground: #fefefe;
   --secondary: #475569;
-  --secondary-foreground: #f8fafc;
+  --secondary-foreground: #fefefe;
   --muted: #475569;
-  --muted-foreground: #cbd5e1;
+  --muted-foreground: #e2e8f0;
   --accent: #3b82f6;
-  --accent-foreground: #f8fafc;
+  --accent-foreground: #fefefe;
   --destructive: #ef4444;
   --border: #475569;
   --input: #475569;
@@ -70,28 +70,28 @@
   --chart-4: #f59e0b;
   --chart-5: #ef4444;
   --sidebar: #334155;
-  --sidebar-foreground: #f8fafc;
+  --sidebar-foreground: #fefefe;
   --sidebar-primary: #3b82f6;
-  --sidebar-primary-foreground: #f8fafc;
+  --sidebar-primary-foreground: #fefefe;
   --sidebar-accent: #475569;
-  --sidebar-accent-foreground: #f8fafc;
+  --sidebar-accent-foreground: #fefefe;
   --sidebar-border: #475569;
   --sidebar-ring: #3b82f6;
 }
 
 .dark {
   --background: #0f172a;
-  --foreground: #f8fafc;
+  --foreground: #f1f5f9;
   --card: #1e293b;
-  --card-foreground: #f8fafc;
+  --card-foreground: #f1f5f9;
   --popover: #1e293b;
-  --popover-foreground: #f8fafc;
+  --popover-foreground: #f1f5f9;
   --primary: #60a5fa;
   --primary-foreground: #0f172a;
   --secondary: #334155;
-  --secondary-foreground: #f8fafc;
+  --secondary-foreground: #f1f5f9;
   --muted: #334155;
-  --muted-foreground: #94a3b8;
+  --muted-foreground: #cbd5e1;
   --accent: #60a5fa;
   --accent-foreground: #0f172a;
   --destructive: #f87171;
@@ -104,11 +104,11 @@
   --chart-4: #fbbf24;
   --chart-5: #f87171;
   --sidebar: #1e293b;
-  --sidebar-foreground: #f8fafc;
+  --sidebar-foreground: #f1f5f9;
   --sidebar-primary: #60a5fa;
   --sidebar-primary-foreground: #0f172a;
   --sidebar-accent: #334155;
-  --sidebar-accent-foreground: #f8fafc;
+  --sidebar-accent-foreground: #f1f5f9;
   --sidebar-border: #334155;
   --sidebar-ring: #60a5fa;
 }
@@ -120,5 +120,20 @@
   body {
     @apply text-foreground;
     min-height: 100vh;
+  }
+}
+
+@layer utilities {
+  .text-outline-sm {
+    -webkit-text-stroke: 0.5px #fff;
+    text-stroke: 0.5px #fff;
+  }
+  .text-outline-md {
+    -webkit-text-stroke: 1px #fff;
+    text-stroke: 1px #fff;
+  }
+  .text-outline-lg {
+    -webkit-text-stroke: 1px #fff;
+    text-stroke: 1px #fff;
   }
 }
