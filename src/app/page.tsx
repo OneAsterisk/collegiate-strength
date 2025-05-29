@@ -1,8 +1,7 @@
-import { ExampleUsage } from "@/components/ExampleUsage";
-
 export default function Home() {
   return (
     <div className="min-h-screen p-8">
+      <p></p>
       <div className="max-w-4xl mx-auto">
         <header className="text-center mb-8">
           <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100">
@@ -13,9 +12,7 @@ export default function Home() {
           </p>
         </header>
 
-        <main>
-          <ExampleUsage />
-        </main>
+        <main></main>
       </div>
     </div>
   );
